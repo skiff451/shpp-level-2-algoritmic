@@ -17,10 +17,11 @@ const cities =
 09,12,Луцк,9900000
 99,11,Тернополь,1500000
 `
+const someText = `Киев был основан в 905 году гетьманом Святославом Мудрым. 
+Многие выдающиеся личности говорили про Киев как про родину хлебопекарства в Украине.`;
 
-// const otherFunc = parseCSV(cities);
-console.log(parseCSV(cities)('Харьков'));
 
+console.log(parseCSV(cities)(someText));
 
 function parseCSV(cities) {
     const citiesInformation = cities.split('\n')
@@ -55,13 +56,14 @@ function parseCSV(cities) {
 
 
     return (someText) => {
-        const citiesNames = Object.keys(citiesInformation);
-        let answer = 'there is no such city in the base, try more';
-        citiesNames.forEach(item => {
-            if (item === someText) {
-                answer = `${item} (${citiesInformation[item].rating} место в ТОП-10 самых крупных городов Украины, население ${citiesInformation[item].population} человек)`;
-            }
-        })
-        return answer;
+
+        Object.keys(citiesInformation)
+            .forEach(city => {
+                if (someText.search(city) >= 0) {
+                    someText = someText.replace(city, `${city} (${citiesInformation[city].rating} место в ТОП-10 самых крупных городов Украины, население ${citiesInformation[city].population} человек)`);
+                }
+            })
+        return someText;
     }
 }
+
